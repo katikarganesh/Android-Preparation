@@ -153,7 +153,21 @@ fun producer(): Flow<Int> {
         }
 }
 ```
-
+Output:
+```kotlin
+==> on start
+==> about to emit 1
+==> collect 1
+==> about to emit 2
+==> collect 2
+==> about to emit 3
+==> collect 3
+==> about to emit 4
+==> collect 4
+==> about to emit 5
+==> collect 5
+==> on completion
+```
 
 
 
