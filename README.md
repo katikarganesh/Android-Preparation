@@ -19,3 +19,41 @@
 - onStop() - Called when an activity is no longer visible to the user.
 - onRestart() - Called when an activity stopped, prior to restart.
 - onDestroy() - Called when an activity is destroyed.
+
+## Flow in Kotin
+#### Flow is a reactive stream processing library that provides a way to emit and consumes streams of data asynchronously and efficiently.
+
+There are two types of Streams.
+#### Hot Stream
+Hot Stream produces data no matter consumer is consuming it or not.
+#### Cold Stream
+Cold Stream produces data only if consumer is consuming at the other side.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
