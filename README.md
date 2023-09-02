@@ -112,6 +112,13 @@ Below is the output:
 ==> collect2 5
 ```
 
+#### How to cancel flow?
+Flow are cancellable by default.
+```kotlin
+val job=scope.launch{ flow.cancellable().collect{ }}
+job.cancel()
+```
+cancellable() will ensure the flow is terminated before new items are emitted to collect {}.  if job is cancelled though flow builder and all its implementation are cancellable() by default.
 
 
 
