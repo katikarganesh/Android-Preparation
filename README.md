@@ -23,13 +23,26 @@
 ## Flow in Kotin
 #### Flow is a reactive stream processing library that provides a way to emit and consumes streams of data asynchronously and efficiently.
 ![flow1.png](assets/flow1.png)
-<img align="center" src="file:///assets/flow1.png" height="100" />
+<img align="center" src="file:///assets/flow1.png" height="80" />
 
 There are two types of Streams.
 #### Hot Stream
 Hot Stream produces data no matter consumer is consuming it or not.
 #### Cold Stream
 Cold Stream produces data only if consumer is consuming at the other side.
+
+Flow are by default in Cold nature
+
+Example:
+```kotlin
+GlobalScope.launch {
+            val result = producer()
+            result.collect {
+                delay(1000)
+                Log.d("TAG", "==> collect $it")
+            }
+        }
+```
 
 
 
