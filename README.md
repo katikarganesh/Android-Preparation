@@ -239,6 +239,47 @@ fun producer(): Flow<Int> {
 ==> 10
 ```
 
+##### buffer
+Buffers flow emissions via channel of a specified capacity and runs collector in a separate coroutine.
+
+```kotlin
+flowOf("A", "B", "C")
+    .onEach  { println("1$it") }
+    .collect { println("2$it") }
+```
+It is going to be executed in the following order by the coroutine Q that calls this code:
+
+```kotlin
+Q : -->-- [1A] -- [2A] -- [1B] -- [2B] -- [1C] -- [2C] -->--
+```
+
+So if the consumer's code takes considerable time to execute, then the total execution time is going to be the sum of execution times for all consumer's.
+
+The buffer consumer's creates a separate coroutine during execution for the flow it applies to. Consider the following code:
+
+```kotlin
+flowOf("A", "B", "C")
+    .onEach  { println("1$it") }
+    .buffer()  // <--------------- buffer between onEach and collect
+    .collect { println("2$it") }
+
+```
+
+It will use two coroutines for execution of the code. A coroutine Q that calls this code is going to execute collect, and the code before buffer will be executed in a separate new coroutine P concurrently with Q:
+
+```kotlin
+P : -->-- [1A] -- [1B] -- [1C] ---------->--  // flowOf(...).onEach { ... }
+
+                      |
+                      | channel               // buffer()
+                      V
+
+Q : -->---------- [2A] -- [2B] -- [2C] -->--  // collect
+
+```
+
+When the consumer's code takes some time to execute, this decreases the total execution time of the flow
+
 
 
 
