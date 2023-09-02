@@ -180,7 +180,7 @@ e.g map{}, filter{}, buffer() etc
 
 ##### first(): Returns the first value
 
-#### last(): Returns the last value
+##### last(): Returns the last value
 
 ##### toList(): Returns the entire object as a result.
 
@@ -298,7 +298,7 @@ withContext(Dispatchers.Main) {
 }
 ```
 
-#### catch
+##### catch
 Catches exception in the flow.
 ```kotlin
 flow { 
@@ -315,8 +315,9 @@ process(it)
 
 ```
 
-#### zip
-
+##### zip
+Zips values from the current flow (this) with other flow
+Example:
 ```kotlin
 GlobalScope.launch {
             val flow = flowOf(1, 2, 3).onEach { delay(10) }
