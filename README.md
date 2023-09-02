@@ -387,8 +387,13 @@ Similar to Shared Flow but it will maintain last emitted value as a state.
 
 In the previous example if we consider then output will start from 3 for consumer B. Because after 2.5 seconds the last emmited value was 3 hence in case of Shared Flow it starts with 4 but in case of State Flow it will start from last stored value.
 
+LiveData Vs Flow
 
-
+| LiveData    | Flow |
+| -------- | ------- |
+| All the operations and filters are done on main thread  | All the operations and filters are done on any thread. Using flowOn operater we can change the thread for flow.    |
+| We have limited operators in LiveData | More operators as compared to LiveData     |
+| LiveData is lifecycle aware    | Flow is independent, and require coroutine.    |
 
 
 
