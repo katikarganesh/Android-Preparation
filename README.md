@@ -122,9 +122,9 @@ cancellable() will ensure the flow is terminated before new items are emitted to
 
 #### Events in flow?
 ##### onStart() :
-onStart(){} blocks will gets executed before collected any item at the start.
+onStart(){} blocks will gets executed before consuming of any item at the start.
 ##### onCompletion()
-onCompletion(){} blocks will gets executed after all the items are collected.
+onCompletion(){} blocks will gets executed after all the items are consumed.
 ##### onEach()
 onEach(){} blocks will gets executed before each item is about to emit.
 
