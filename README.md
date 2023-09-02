@@ -334,10 +334,58 @@ Output
 ==> 3c
 ```
 
+#### Shared Flow is Hot Stream in nature
+
+Example:
+```kotlin
+//ConsumerA
+GlobalScope.launch(Dispatchers.Main) {
+            val consumerA = producer()
+            consumerA.collect {
+                Log.d("TAG", "==> Consumer A: $it")
+            }
+}
+
+//ConsumerB
+GlobalScope.launch(Dispatchers.Main) {
+            val consumberB = producer()
+            delay(2500)//Will add some delay so that Consumer B will start collecting values after 2.5 seconds
+            consumberB.collect {
+                Log.d("TAG", "==> Consumer B: $it")
+            }
+}
+
+fun producer(): MutableSharedFlow<Int> {
+        val mutableSharedFlow = MutableSharedFlow<Int>()
+        GlobalScope.launch {
+            val list = listOf<Int>(1, 2, 3, 4, 5)
+            list.forEach {
+                mutableSharedFlow.emit(it)
+                delay(1000)
+            }
+        }
+        return mutableSharedFlow
+}
+```
+
+Output
+```kotlin
+==> Consumer A: 1
+==> Consumer A: 2
+==> Consumer A: 3
+==> Consumer B: 4
+==> Consumer A: 4
+==> Consumer B: 5
+==> Consumer A: 5
+```
+
+In the above example consumer A started initially but consumer B started after 2.5 seconds hence after that time the current emission value is 4 in abvoe case hence consumer B will get value from 4. Shared Flow are Hot Stream in nature and hence it is not independent of consumer.
 
 
+#### StateFlow
+Similar to Shared Flow but it will maintain last emitted value as a state.
 
-
+In the previous example if we consider then output will start from 3 for consumer B. Because after 2.5 seconds the last emmited value was 3 hence in case of Shared Flow it starts with 4 but in case of State Flow it will start from last stored value.
 
 
 
