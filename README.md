@@ -168,6 +168,42 @@ Output:
 ==> collect 5
 ==> on completion
 ```
+#### Operators in Flow
+
+Two types of operators presents in kotlin flow. **Terminal operators** and **Non-terminal operators**.
+
+- Terminal operators are responsible for starting a flow. It is a suspend function.
+e.g first(), toList(), collect() etc
+
+- Non-terminal operators are not responsible for starting a flow.
+e.g map{}, filter{}, buffer() etc
+
+##### first(): Returns the first value
+
+##### toList(): Returns the entire object as a result.
+
+Example:
+```kotlin
+GlobalScope.launch {
+   val result = producer()
+   Log.d("TAG, ","==> Result first(): ${result.first()}")
+   Log.d("TAG, ","==> Result toList(): ${result.toList()}")
+}
+
+fun producer(): Flow<Int> {
+        val list = listOf<Int>(1, 2, 3, 4, 5)
+        return flow<Int> {
+            list.forEach {
+                emit(it)
+            }
+        }
+}
+```
+
+```kotlin
+==> Result first(): 1
+==> Result toList(): [1, 2, 3, 4, 5]
+```
 
 
 
