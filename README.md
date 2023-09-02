@@ -22,6 +22,8 @@
 
 ## Flow in Kotin
 #### Flow is a reactive stream processing library that provides a way to emit and consumes streams of data asynchronously and efficiently.
+![flow1.png](assets/flow1.png)
+<img align="center" src="file:///assets/flow1.png" height="100" />
 
 There are two types of Streams.
 #### Hot Stream
