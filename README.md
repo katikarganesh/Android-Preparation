@@ -118,8 +118,41 @@ Flow are cancellable by default.
 val job=scope.launch{ flow.cancellable().collect{ }}
 job.cancel()
 ```
-cancellable() will ensure the flow is terminated before new items are emitted to collect {}.  if job is cancelled though flow builder and all its implementation are cancellable() by default.
+cancellable() will ensure the flow is terminated before new items are emitted to collect {}.  if job is cancelled though flow builder then all its implementation are cancellable() by default.
 
+#### Events in flow?
+##### onStart() :
+onStart(){} blocks will gets executed before collected any item at the start.
+##### onCompletion()
+onCompletion(){} blocks will gets executed after all the items are collected.
+##### onEach()
+onEach(){} blocks will gets executed before each item is about to emit.
+
+Example:
+```kotlin
+GlobalScope.launch {
+            val result = producer()
+            result.onStart {
+                Log.d("TAG", "==> on start")
+            }.onCompletion {
+                Log.d("TAG", "==> on completion")
+            }.onEach {
+                Log.d("TAG", "==> about to emit $it")
+            }.collect {
+                delay(1000)
+                Log.d("TAG", "==> collect $it")
+            }
+}
+
+fun producer(): Flow<Int> {
+        val list = listOf<Int>(1, 2, 3, 4, 5)
+        return flow<Int> {
+            list.forEach {
+                emit(it)
+            }
+        }
+}
+```
 
 
 
