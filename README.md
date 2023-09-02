@@ -180,6 +180,8 @@ e.g map{}, filter{}, buffer() etc
 
 ##### first(): Returns the first value
 
+#### last(): Returns the last value
+
 ##### toList(): Returns the entire object as a result.
 
 Example:
@@ -188,6 +190,7 @@ GlobalScope.launch {
    val result = producer()
    Log.d("TAG, ","==> Result first(): ${result.first()}")
    Log.d("TAG, ","==> Result toList(): ${result.toList()}")
+   Log.d("TAG, ","==> Result last(): ${result.last()}")
 }
 
 fun producer(): Flow<Int> {
@@ -203,6 +206,7 @@ fun producer(): Flow<Int> {
 ```kotlin
 ==> Result first(): 1
 ==> Result toList(): [1, 2, 3, 4, 5]
+==> Result last(): 5
 ```
 
 ##### map{}: Transform the one object into another.
@@ -280,7 +284,54 @@ Q : -->---------- [2A] -- [2B] -- [2C] -->--  // collect
 
 When the consumer's code takes some time to execute, this decreases the total execution time of the flow
 
+##### flowOn()
+Using flowOn operator we can change the context of the flow
 
+```kotlin
+withContext(Dispatchers.Main) {
+    val singleValue = intFlow // will be executed on IO if context wasn't specified before
+        .map { ... } // Will be executed in IO
+        .flowOn(Dispatchers.IO)
+        .filter { ... } // Will be executed in Default
+        .flowOn(Dispatchers.Default)
+        .single() // Will be executed in the Main
+}
+```
+
+#### catch
+Catches exception in the flow.
+```kotlin
+flow { 
+    emitData()
+}.map {
+    computeOne(it) 
+}.catch { 
+... // catches exceptions in emitData and computeOne 
+}.map { 
+computeTwo(it) 
+}.collect { 
+process(it) 
+} // throws exceptions from process and computeTwo
+
+```
+
+#### zip
+
+```kotlin
+GlobalScope.launch {
+            val flow = flowOf(1, 2, 3).onEach { delay(10) }
+            val flow2 = flowOf("a", "b", "c", "d").onEach { delay(15) }
+            flow.zip(flow2) { i, s -> i.toString() + s }.collect {
+                println("==> $it") // Will print "1a 2b 3c"
+            }
+        }
+```
+Output
+```kotlin
+==> 1a
+==> 2b
+==> 3c
+```
 
 
 
