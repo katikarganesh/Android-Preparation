@@ -42,6 +42,15 @@ GlobalScope.launch {
                 Log.d("TAG", "==> collect $it")
             }
         }
+        
+ fun producer(): Flow<Int> {
+    val list = listOf<Int>(1, 2, 3, 4, 5)
+    return flow<Int> {
+       list.forEach {
+          emit(it)
+       }
+    }
+ }
 ```
 
 
