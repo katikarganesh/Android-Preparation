@@ -205,6 +205,40 @@ fun producer(): Flow<Int> {
 ==> Result toList(): [1, 2, 3, 4, 5]
 ```
 
+##### map{}: Transform the one object into another.
+
+##### filter{}: Filter the object based on condition.
+
+```kotlin
+GlobalScope.launch {
+            val result = producer()
+            result.map {
+                it*2
+            }.filter {
+                it%2==0
+            }.collect{
+                Log.d("TAG", "==> ${it}")
+            }
+}
+
+fun producer(): Flow<Int> {
+        val list = listOf<Int>(1, 2, 3, 4, 5)
+        return flow<Int> {
+            list.forEach {
+                emit(it)
+            }
+        }
+}
+```
+
+```kotlin
+==> 2
+==> 4
+==> 6
+==> 8
+==> 10
+```
+
 
 
 
